@@ -1,0 +1,25 @@
+image: gradle:4.9-jdk8
+
+cache:
+  paths:
+  - .gradle/
+
+.build_template: &template
+  tags:
+  - docker
+  artifacts:
+    when: on_failure
+    expire_in: 1 week
+    paths:
+      - build/reports/
+  before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
+stages:
+- build
+
+build_job:
+  <<: *template
+  stage: build
+  script:
+  - gradle --no-daemon build -info

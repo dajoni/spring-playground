@@ -1,0 +1,67 @@
+plugins {
+	id 'org.springframework.boot' version '2.0.3.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.5.RELEASE'
+	id 'com.palantir.docker' version '0.19.2'
+	id 'com.palantir.git-version' version '0.12.0-rc2'
+	id 'java'
+	id 'project-report'
+}
+
+repositories {
+	mavenLocal()
+	mavenCentral()
+	maven { url "https://dl.bintray.com/palantir/releases" }
+}
+
+
+springBoot {
+	buildInfo()
+}
+
+group = 'grid'
+def versionDetails = versionDetails()
+if (versionDetails.branchName == "master") {
+	version = gitVersion()
+} else {
+	version = "${versionDetails.branchName}-${gitVersion()}"
+}
+sourceCompatibility = 8
+targetCompatibility = 8
+
+docker.dependsOn bootJar
+
+
+docker {
+	name "dajoni/spring-reactive-junit5:${project.version}"
+	tags 'latest'
+	files bootJar.outputs
+	dockerfile file("src/main/docker/Dockerfile")
+}
+
+test {
+	useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+dependencies {
+	compileOnly("org.projectlombok:lombok:1.16.20")
+	// gradle 4.9 and 1.16.22 are incompatible
+	compileOnly("org.springframework.boot:spring-boot-configuration-processor")
+	implementation("org.springframework.boot:spring-boot-starter-actuator")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("org.springframework.boot:spring-boot-starter-hateoas") {
+        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+    }
+    implementation("org.springframework.boot:spring-boot-starter-undertow")
+
+
+	testCompileOnly("org.projectlombok:lombok:1.16.20")
+	// gradle 4.9 and 1.16.22 are incompatible
+	testImplementation('org.junit.jupiter:junit-jupiter-api:5.2.0')
+	testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude group: "junit", module: "junit"
+	}
+}
