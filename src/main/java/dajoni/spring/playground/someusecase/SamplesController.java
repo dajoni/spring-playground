@@ -17,4 +17,6 @@ public class SamplesController {
         log.info("Got request {}, {}", name, id);
         return new SampleResource(Sample.builder().id(id).set(name).build());
     }
+
+
 }

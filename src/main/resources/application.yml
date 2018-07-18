@@ -1,3 +1,13 @@
+#server:
+#  undertow:
+#    accesslog:
+#      enabled: true
+#      dir: ${PLAYGROUND_DATA_DIR:./}logs
+
 service:
   playground:
+    some-url: https://myuri/
+    names:
+      - foo
+      - bar
 
