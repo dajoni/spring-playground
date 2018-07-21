@@ -1,0 +1,53 @@
+version: '2'
+
+services:  
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    container_name: zookeeper
+    restart: always
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+    ports:
+      - "2181:2181"
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "5"
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    container_name: kafka
+    restart: always
+    stop_grace_period: 2m
+    environment:
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+# Use locally - KAFKA_HOST is set in Gradle. Use gradle composeUp / gradle composeDown
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${KAFKA_HOST}:9092
+      KAFKA_DELETE_TOPIC_ENABLE: "true"
+      KAFKA_INTER_BROKER_PROTOCOL_VERSION: 0.10.2
+      KAFKA_LOG_MESSAGE_FORMAT_VERSION: 0.10.2
+      KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
+    ports:
+      - "9092:9092"
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "5"
+
+  schema_registry:
+    image: confluentinc/cp-schema-registry:$CONFLUENT_VERSION
+    container_name: schema_registry
+    restart: always
+    environment:
+      SCHEMA_REGISTRY_KAFKASTORE_CONNECTION_URL: zookeeper:2181
+      SCHEMA_REGISTRY_HOST_NAME: schema_registry
+      SCHEMA_REGISTRY_LISTENERS: http://0.0.0.0:8081
+    ports:
+      - "8081:8081"
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "5"

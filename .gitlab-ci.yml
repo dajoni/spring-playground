@@ -17,9 +17,16 @@ cache:
 
 stages:
 - build
+- docker
 
 build_job:
   <<: *template
   stage: build
   script:
   - gradle --no-daemon build -info
+
+docker_job:
+  <<: *template
+  stage: docker
+  script:
+  - gradle --no-daemon docker -info

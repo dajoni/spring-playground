@@ -9,9 +9,8 @@ A testing project for me having fun :)
 * Spring HATEOAS 
 * GitLab CI - https://gitlab.com/dajoni/spring-playground
 
-## What I want to integrate later
-* Kubernetes namespace promotion of builds
-* Kafka consume / produce
+# What I want to integrate later
+Plans for this project can be found here https://trello.com/b/pAussyZZ/spring-playground
 
 
 
