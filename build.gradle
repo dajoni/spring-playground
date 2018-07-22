@@ -18,8 +18,8 @@ springBoot {
 	buildInfo()
 }
 
-group = 'grid'
 def versionDetails = versionDetails()
+println versionDetails.branchName
 if (versionDetails.branchName == "master") {
 	version = gitVersion()
 } else {
