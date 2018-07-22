@@ -18,19 +18,20 @@ ciimage_job:
   image: docker:stable
   stage: prepareci
   script:
-  - docker build --rm -t registry.gitlab.com/dajoni/spring-playground/gradle-ci ci-image
+  - docker pull registry.gitlab.com/dajoni/spring-playground/gradle-ci:latest || true
+  - docker build --cache-from=registry.gitlab.com/dajoni/spring-playground/gradle-ci:latest -t registry.gitlab.com/dajoni/spring-playground/gradle-ci ci-image
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
-  - docker push registry.gitlab.com/dajoni/spring-playground/gradle-ci
+  - docker push registry.gitlab.com/dajoni/spring-playground/gradle-ci:latest
 
 build_job:
-  image: registry.gitlab.com/dajoni/spring-playground/gradle-ci
+  image: registry.gitlab.com/dajoni/spring-playground/gradle-ci:latest
   stage: build
   script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - gradle --no-daemon build -info
 
 docker_job:
-  image: registry.gitlab.com/dajoni/spring-playground/gradle-ci
+  image: registry.gitlab.com/dajoni/spring-playground/gradle-ci:latest
   stage: docker
   script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
