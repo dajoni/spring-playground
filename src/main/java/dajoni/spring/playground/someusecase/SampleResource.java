@@ -12,7 +12,8 @@ public class SampleResource extends ResourceSupport {
     public SampleResource(Sample sample) {
         this.sample = sample;
 
-        add(linkTo(SamplesController.class).withRel("my-someusecase-controller"));
+        add(linkTo(SamplesController.class).withRel("samples"));
         add(linkTo(methodOn(SamplesController.class).getSample(sample.getSet(), sample.getId())).withSelfRel());
+        add(linkTo(methodOn(SamplesController.class).getSampleSet(sample.getSet())).withRel("collection"));
     }
 }

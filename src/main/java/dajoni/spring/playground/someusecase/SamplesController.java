@@ -7,15 +7,28 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @RestController()
-@RequestMapping("/someusecase")
+@RequestMapping("/samples")
 @Slf4j
 public class SamplesController {
 
-    @GetMapping("/{name}/{id}")
-    public SampleResource getSample(@PathVariable String name, @PathVariable String id) {
-        log.info("Got request {}, {}", name, id);
-        return new SampleResource(Sample.builder().id(id).set(name).build());
+    @GetMapping("/{collection}/{id}")
+    public SampleResource getSample(@PathVariable String collection, @PathVariable String id) {
+        log.info("Got request {}, {}", collection, id);
+        return new SampleResource(Sample.builder().id(id).set(collection).build());
+    }
+
+    @GetMapping("/{collection}")
+    public List<SampleResource> getSampleSet(@PathVariable String collection) {
+        log.info("Got request {}", collection);
+        List<SampleResource> results = new ArrayList<>();
+        results.add(new SampleResource(Sample.builder().id("1.3.5").set(collection).build()));
+        results.add(new SampleResource(Sample.builder().id("2.3.4").set(collection).build()));
+        results.add(new SampleResource(Sample.builder().id("6.7.5").set(collection).build()));
+        return results;
     }
 
 
