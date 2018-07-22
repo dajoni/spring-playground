@@ -20,8 +20,8 @@ springBoot {
 
 def versionDetails = versionDetails()
 def branchName = versionDetails.branchName
-if (System.getenv("CI_BUILD_REF_NAME") != null) {
-	branchName = System.getenv("CI_BUILD_REF_NAME")
+if (System.getenv("CI_COMMIT_REF_NAME") != null) {
+	branchName = System.getenv("CI_COMMIT_REF_NAME")
 }
 
 if (branchName == "master") {
