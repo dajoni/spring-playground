@@ -19,12 +19,15 @@ springBoot {
 }
 
 def versionDetails = versionDetails()
-if (versionDetails.branchName == "master") {
-	println "1 Version Details branchname: ${versionDetails.branchName}"
+def branchName = versionDetails.branchName
+if (System.getenv("CI_BUILD_REF_NAME") != null) {
+	branchName = System.getenv("CI_BUILD_REF_NAME")
+}
+
+if (branchName == "master") {
 	version = gitVersion()
 } else {
-	println "2 Version Details branchname: ${versionDetails.branchName}"
-	version = "${versionDetails.branchName}-${gitVersion()}"
+	version = "${branchName}-${gitVersion()}"
 }
 sourceCompatibility = 8
 targetCompatibility = 8
