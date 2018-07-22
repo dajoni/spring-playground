@@ -1,9 +1,13 @@
-
 cache:
   paths:
   - .gradle/
 
-before_script:
+services:
+  - docker:dind
+
+variables:
+  DOCKER_HOST: tcp://docker:2375
+  DOCKER_DRIVER: overlay2
 
 stages:
 - prepareci
@@ -11,7 +15,7 @@ stages:
 - docker
 
 ciimage_job:
-  image: docker:dind
+  image: docker:stable
   stage: prepareci
   script:
   - docker build --rm -t registry.gitlab.com/dajoni/spring-playground/gradle-ci ci-image
@@ -26,7 +30,8 @@ build_job:
   - gradle --no-daemon build -info
 
 docker_job:
-  stage: registry.gitlab.com/dajoni/spring-playground/gradle-ci
+  image: registry.gitlab.com/dajoni/spring-playground/gradle-ci
+  stage: docker
   script:
   - export GRADLE_USER_HOME=`pwd`/.gradle
   - gradle --no-daemon docker -info
