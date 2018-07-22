@@ -22,7 +22,7 @@ public class IntegrationTest {
 
     @Test
     public void test_get_urls_for_a_sample() throws Exception {
-        ResponseEntity<String> entity = restTemplate.getForEntity("/someusecase/some-set/15.3.5", String.class);
+        ResponseEntity<String> entity = restTemplate.getForEntity("/samples/some-set/15.3.5", String.class);
         assertThat(entity.getStatusCode()).isEqualTo(HttpStatus.OK);
     }
 
