@@ -31,8 +31,3 @@ build_job:
   script:
   - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
   - gradle --no-daemon build docker dockerPush -info
-
-version:
-  image: registry.gitlab.com/dajoni/spring-playground/gradle-ci:latest
-  script:
-  - gradle printVersion
