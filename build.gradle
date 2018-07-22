@@ -19,10 +19,11 @@ springBoot {
 }
 
 def versionDetails = versionDetails()
-println versionDetails.branchName
 if (versionDetails.branchName == "master") {
+	println "1 Version Details branchname: ${versionDetails.branchName}"
 	version = gitVersion()
 } else {
+	println "2 Version Details branchname: ${versionDetails.branchName}"
 	version = "${versionDetails.branchName}-${gitVersion()}"
 }
 sourceCompatibility = 8
