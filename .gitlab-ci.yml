@@ -1,32 +1,34 @@
-image: gradle:4.9-jdk8
 
 cache:
   paths:
   - .gradle/
 
-.build_template: &template
-  tags:
-  - docker
-  artifacts:
-    when: on_failure
-    expire_in: 1 week
-    paths:
-      - build/reports/
-  before_script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
+before_script:
 
 stages:
+- prepareci
 - build
 - docker
 
+ciimage_job:
+  image: docker:latest
+  services:
+  - docker:dind
+  stage: prepareci
+  script:
+  - docker build -t registry.gitlab.com/dajoni/spring-playground/gradle-ci ci-image
+  - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN registry.gitlab.com
+  - docker push registry.gitlab.com/dajoni/spring-playground/gradle-ci
+
 build_job:
-  <<: *template
+  image: registry.gitlab.com/dajoni/spring-playground/gradle-ci
   stage: build
   script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
   - gradle --no-daemon build -info
 
 docker_job:
-  <<: *template
-  stage: docker
+  stage: registry.gitlab.com/dajoni/spring-playground/gradle-ci
   script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
   - gradle --no-daemon docker -info
