@@ -36,7 +36,7 @@ docker.dependsOn bootJar
 
 
 docker {
-	name "registry.gitlab.com/dajoni/spring-playground:${project.version}"
+	name "registry.gitlab.com/dajoni/spring-playground/resource-service:${project.version}"
 	tags 'latest'
 	files bootJar.outputs
 	dockerfile file("src/main/docker/Dockerfile")
