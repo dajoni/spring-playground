@@ -5,6 +5,9 @@ cache:
 services:
   - docker:dind
 
+before_script:
+  - export GRADLE_USER_HOME=`pwd`/.gradle
+
 variables:
   DOCKER_HOST: tcp://docker:2375
   DOCKER_DRIVER: overlay2
@@ -12,7 +15,6 @@ variables:
 stages:
 - prepareci
 - build
-- docker
 
 ciimage_job:
   image: docker:stable
@@ -27,12 +29,4 @@ build_job:
   image: registry.gitlab.com/dajoni/spring-playground/gradle-ci:latest
   stage: build
   script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-  - gradle --no-daemon build -info
-
-docker_job:
-  image: registry.gitlab.com/dajoni/spring-playground/gradle-ci:latest
-  stage: docker
-  script:
-  - export GRADLE_USER_HOME=`pwd`/.gradle
-  - gradle --no-daemon docker -info
+  - gradle --no-daemon build docker dockerPush -info
