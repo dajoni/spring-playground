@@ -1,8 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '2.0.3.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.5.RELEASE'
-	id 'com.palantir.docker' version '0.19.2'
-	id 'com.palantir.git-version' version '0.12.0-rc2'
+	id 'org.springframework.boot' 
+	id 'io.spring.dependency-management'
+	id 'com.palantir.docker' 
+	id 'com.palantir.git-version' 
 	id 'java'
 	id 'project-report'
 }
@@ -29,7 +29,7 @@ docker.dependsOn bootJar
 
 
 docker {
-	name "registry.gitlab.com/dajoni/spring-playground/resource-service:${project.version}"
+	name "registry.gitlab.com/dajoni/spring-playground/event-producer:${project.version}"
 	tags 'latest'
 	files bootJar.outputs
 	dockerfile file("src/main/docker/Dockerfile")
@@ -42,27 +42,27 @@ test {
     }
 }
 
-allprojects {
-	repositories {
-		mavenLocal()
-		mavenCentral()
-		maven { url "https://dl.bintray.com/palantir/releases" }
-		maven { url "http://packages.confluent.io/maven/" }
-	}
-}
-
-
 dependencies {
 	compileOnly("org.projectlombok:lombok:1.16.20")
 	// gradle 4.9 and 1.16.22 are incompatible
 	compileOnly("org.springframework.boot:spring-boot-configuration-processor")
-	implementation("org.springframework.boot:spring-boot-starter-actuator")
-	implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation project(":avro-schema")
-	implementation("org.springframework.boot:spring-boot-starter-hateoas") {
-        exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
+	implementation('org.springframework.boot:spring-boot-starter')
+	implementation("io.confluent:kafka-avro-serializer:4.1.1") {
+		// using slf4j from spring
+		exclude group: "log4j", module: "log4j"
+		exclude group: "org.slf4j", module: "slf4j-log4j12"		
+	}
+    implementation("org.apache.kafka:kafka_2.11:1.1.1-cp1") {
+		// using slf4j from spring
+		exclude group: "log4j", module: "log4j"
+		exclude group: "org.slf4j", module: "slf4j-log4j12"		
+	}
+
+    implementation('org.springframework.kafka:spring-kafka') {
+        exclude module: "kafka-clients"
     }
-    implementation("org.springframework.boot:spring-boot-starter-undertow")
+
 
 
 	testCompileOnly("org.projectlombok:lombok:1.16.20")

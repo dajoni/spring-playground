@@ -6,4 +6,4 @@ pluginManagement {
     }
 }
 rootProject.name = 'spring-playground'
-include 'avro-schema'
+include 'avro-schema', 'event-producer'
