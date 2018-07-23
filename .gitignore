@@ -1,5 +1,5 @@
 .gradle
-/build/
+build/
 /esdata/
 
 ### STS ###
@@ -21,7 +21,6 @@
 
 ### NetBeans ###
 /nbproject/private/
-/build/
 /nbbuild/
 /dist/
 /nbdist/
