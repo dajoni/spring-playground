@@ -22,11 +22,8 @@ services:
     stop_grace_period: 2m
     environment:
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-# Use locally - KAFKA_HOST is set in Gradle. Use gradle composeUp / gradle composeDown
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://${KAFKA_HOST}:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_DELETE_TOPIC_ENABLE: "true"
-      KAFKA_INTER_BROKER_PROTOCOL_VERSION: 0.10.2
-      KAFKA_LOG_MESSAGE_FORMAT_VERSION: 0.10.2
       KAFKA_LOG4J_ROOT_LOGLEVEL: INFO
     ports:
       - "9092:9092"
@@ -37,7 +34,7 @@ services:
         max-file: "5"
 
   schema_registry:
-    image: confluentinc/cp-schema-registry:$CONFLUENT_VERSION
+    image: confluentinc/cp-schema-registry:latest
     container_name: schema_registry
     restart: always
     environment:

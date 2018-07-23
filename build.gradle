@@ -7,13 +7,6 @@ plugins {
 	id 'project-report'
 }
 
-repositories {
-	mavenLocal()
-	mavenCentral()
-	maven { url "https://dl.bintray.com/palantir/releases" }
-}
-
-
 springBoot {
 	buildInfo()
 }
@@ -49,13 +42,23 @@ test {
     }
 }
 
+allprojects {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven { url "https://dl.bintray.com/palantir/releases" }
+	}
+}
+
+
 dependencies {
 	compileOnly("org.projectlombok:lombok:1.16.20")
 	// gradle 4.9 and 1.16.22 are incompatible
 	compileOnly("org.springframework.boot:spring-boot-configuration-processor")
 	implementation("org.springframework.boot:spring-boot-starter-actuator")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-hateoas") {
+    implementation project(":avro-schema")
+	implementation("org.springframework.boot:spring-boot-starter-hateoas") {
         exclude group: "org.springframework.boot", module: "spring-boot-starter-tomcat"
     }
     implementation("org.springframework.boot:spring-boot-starter-undertow")

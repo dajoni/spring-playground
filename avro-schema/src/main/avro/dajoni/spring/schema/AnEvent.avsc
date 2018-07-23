@@ -1,0 +1,13 @@
+{
+  "namespace": "dajoni.spring.schema",
+  "type": "record",
+  "name": "AnEvent",
+  "doc": "An event happened.",
+  "fields": [
+    {"name": "participantA", "type": "int"}, 
+    {"name": "participantB", "type": "int"},
+    {"name": "timestamp", "type": "long", "logicalType": "timestamp-millis"},
+    {"name": "id", "type": "string"},
+    {"name": "set", "type": "string"}
+  ]
+}
