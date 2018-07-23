@@ -1,0 +1,10 @@
+spring:
+  kafka:
+    consumer:
+      group-id: local
+      auto-offset-reset: earliest
+    bootstrap-servers: kafka:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
+      value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
+
