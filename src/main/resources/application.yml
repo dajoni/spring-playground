@@ -10,4 +10,13 @@ service:
     names:
       - foo
       - bar
+    application-users:
+      - username: monitor
+        password: monitor_me
+        roles: MONITOR
+      - username: serviceadmin
+        password: admin123
+        roles: ADMIN
+
+
 
