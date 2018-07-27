@@ -6,15 +6,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
-import java.util.Arrays;
+import java.io.File;
 import java.util.Random;
+import java.util.Scanner;
 
 @Component
 @Slf4j
 public class ProducerRunner implements CommandLineRunner {
 
     private final KafkaTemplate<Integer, AnEvent> kafkaTemplate;
+    private Random r = new Random();
 
     @Autowired
     public ProducerRunner(KafkaTemplate<Integer, AnEvent> kafkaTemplate) {
@@ -23,19 +26,32 @@ public class ProducerRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        log.info("Application started with command-line arguments: {}", Arrays.toString(args));
-        Random r = new Random();
-        while (true) {
-            Thread.sleep(100);
-            int id = r.nextInt(100);
-            AnEvent data = AnEvent.newBuilder().setParticipantA(id)
-                    .setParticipantB(r.nextInt(100))
-                    .setSet("MySet" + r.nextInt(3))
-                    .setTimestamp(System.currentTimeMillis())
-                    .setId(r.nextInt(20) + "-" + r.nextInt(10))
-                    .build();
-            log.info("Sending message with id {}", id);
-            this.kafkaTemplate.send("events", id, data);
+        File wikiFile = ResourceUtils.getFile("classpath:wiki-Talk.txt");
+        Scanner scanner = new Scanner(wikiFile);
+
+        log.info("Reading file");
+        int lines = 0;
+        while (scanner.hasNextLine()) {
+            lines++;
+            if (scanner.hasNextInt()) {
+                int from = scanner.nextInt();
+                int to = scanner.nextInt();
+                sendRecord(from, to);
+            }
+            scanner.nextLine();
+
         }
+        log.info("Send {} records", lines);
+
+    }
+
+    private void sendRecord(int from, int to) {
+        AnEvent data = AnEvent.newBuilder().setParticipantA(from)
+                .setParticipantB(to)
+                .setSet("MySet" + r.nextInt(3))
+                .setTimestamp(System.currentTimeMillis())
+                .setId(r.nextInt(20) + "-" + r.nextInt(10))
+                .build();
+        this.kafkaTemplate.send("events", from, data);
     }
 }
