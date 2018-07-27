@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -26,22 +27,26 @@ public class ProducerRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        File wikiFile = ResourceUtils.getFile("classpath:wiki-Talk.txt");
-        Scanner scanner = new Scanner(wikiFile);
+        InputStream inputStream = ResourceUtils.getURL("classpath:wiki-Talk.txt").openStream();
+        Scanner scanner = new Scanner(inputStream);
 
         log.info("Reading file");
         int lines = 0;
+        int records = 0;
         while (scanner.hasNextLine()) {
             lines++;
             if (scanner.hasNextInt()) {
                 int from = scanner.nextInt();
                 int to = scanner.nextInt();
                 sendRecord(from, to);
+                records++;
+                if (records % 1000 == 0) log.info("Send {} records", records);
             }
             scanner.nextLine();
 
         }
-        log.info("Send {} records", lines);
+        log.info("Send {} records in {} lines", records, lines);
+        while (true) Thread.sleep(1000);
 
     }
 
