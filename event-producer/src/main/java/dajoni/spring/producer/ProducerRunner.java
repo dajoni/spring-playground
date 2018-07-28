@@ -40,7 +40,7 @@ public class ProducerRunner implements CommandLineRunner {
                 int to = scanner.nextInt();
                 sendRecord(from, to);
                 records++;
-                if (records % 1000 == 0) log.info("Send {} records", records);
+                if (records % 10000 == 0) log.info("Send {} records", records);
             }
             scanner.nextLine();
 
