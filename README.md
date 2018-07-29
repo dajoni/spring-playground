@@ -1,5 +1,5 @@
 # Spring Playground 
-A testing project for me having fun :)
+A testing project for me having fun with Spring, Kafka and Graphs :)
 
 
 ## Technologies tested
@@ -15,8 +15,10 @@ The second step uses Gradle to build, execute tests and push a docker image.
 
 The Dockerfile for the CI image is found in the folder `ci-image`.
 
-# Events
-the folder avro-schema contains the code for generating a simple record for later use in Kafka setup.
+# Data
+I have bundled the dataset from https://snap.stanford.edu/data/wiki-Talk.html into the `event-producer`. 
+The `avro-schema` contains a simple schema for events with a bit of added random meta data.
+
 
 # What I want to integrate later
 Plans for this project can be found here https://trello.com/b/pAussyZZ/spring-playground
