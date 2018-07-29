@@ -5,7 +5,8 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
       value-serializer: io.confluent.kafka.serializers.KafkaAvroSerializer
       client-id: event-producer
-      batch-size: 16777216 # 16 megs
+      batch-size: 524288 # 1/2 mb
       properties:
         schema.registry.url: http://schemaregistry:8081
+        linger.ms: 1000 # up to one second delay
 
