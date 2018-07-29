@@ -6,6 +6,7 @@ A testing project for me having fun with Spring, Kafka and Graphs :)
 * Spring Boot 2
 * Docker 
 * Avro for schema 
+* Confluent Kafka (Single broker setup)
 * GitLab CI - https://gitlab.com/dajoni/spring-playground
 
 # CI pipeline
