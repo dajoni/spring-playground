@@ -10,6 +10,7 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.File;
 import java.io.InputStream;
+import java.time.LocalDate;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -18,11 +19,15 @@ import java.util.Scanner;
 public class ProducerRunner implements CommandLineRunner {
 
     private final KafkaTemplate<Integer, AnEvent> kafkaTemplate;
+    private final ProducerProperties properties;
     private Random r = new Random();
 
+
+
     @Autowired
-    public ProducerRunner(KafkaTemplate<Integer, AnEvent> kafkaTemplate) {
+    public ProducerRunner(KafkaTemplate<Integer, AnEvent> kafkaTemplate, ProducerProperties properties) {
         this.kafkaTemplate = kafkaTemplate;
+        this.properties = properties;
     }
 
     @Override
@@ -53,9 +58,9 @@ public class ProducerRunner implements CommandLineRunner {
     private void sendRecord(int from, int to) {
         AnEvent data = AnEvent.newBuilder().setParticipantA(from)
                 .setParticipantB(to)
-                .setSet("MySet" + r.nextInt(3))
+                .setSet("MySet" + r.nextInt(1000))
                 .setTimestamp(System.currentTimeMillis())
-                .setId(r.nextInt(20) + "-" + r.nextInt(10))
+                .setId((from % 10000) + "-" + (to % 10000))
                 .build();
         this.kafkaTemplate.send("events", from, data);
     }
