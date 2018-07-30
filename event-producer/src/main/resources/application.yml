@@ -8,5 +8,10 @@ spring:
       batch-size: 524288 # 1/2 mb
       properties:
         schema.registry.url: http://schemaregistry:8081
-        linger.ms: 1000 # up to one second delay
+        linger.ms: 1000
+service:
+  producer:
+    from-date: 2018-04-01
+    to-date: 2018-05-31
+
 

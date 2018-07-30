@@ -48,19 +48,13 @@ dependencies {
 	compileOnly("org.springframework.boot:spring-boot-configuration-processor")
     implementation project(":avro-schema")
 	implementation('org.springframework.boot:spring-boot-starter')
-	implementation("io.confluent:kafka-avro-serializer:4.1.1") {
-		// using slf4j from spring
-		exclude group: "log4j", module: "log4j"
-		exclude group: "org.slf4j", module: "slf4j-log4j12"		
-	}
-    implementation("org.apache.kafka:kafka_2.11:1.1.1-cp1") {
-		// using slf4j from spring
-		exclude group: "log4j", module: "log4j"
-		exclude group: "org.slf4j", module: "slf4j-log4j12"		
-	}
+	implementation("io.confluent:kafka-avro-serializer:4.1.1")
+    implementation("org.apache.kafka:kafka_2.11:1.1.1-cp1")
+    implementation('log4j:log4j:1.2.17')
 
     implementation('org.springframework.kafka:spring-kafka') {
-        exclude module: "kafka-clients"
+        // using clients from Confluent
+		exclude module: "kafka-clients"
     }
 
 
@@ -70,6 +64,19 @@ dependencies {
 	testImplementation('org.junit.jupiter:junit-jupiter-api:5.2.0')
 	testRuntime('org.junit.jupiter:junit-jupiter-engine:5.2.0')
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        // using junit 5
 		exclude group: "junit", module: "junit"
 	}
+    testImplementation('org.springframework.kafka:spring-kafka-test') {
+        // using clients from Confluent
+		exclude module: "kafka-clients"
+	}
+    testImplementation("org.apache.kafka:kafka-clients:1.1.1-cp1:test")
+    testImplementation('log4j:log4j:1.2.17')
+
+    configurations.all {
+        // using slf4j from spring
+        exclude group: "log4j", module: "log4j"
+        exclude group: "org.slf4j", module: "slf4j-log4j12"
+    }
 }
