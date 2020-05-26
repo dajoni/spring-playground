@@ -3,7 +3,7 @@
 Creates a docker image with Gradle support useful for CI builds.
 
 The image provides:
-* JDK8
+* JDK11
 * Git
 * Docker
 * Gradle

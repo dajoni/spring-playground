@@ -2,11 +2,12 @@ package dajoni.spring.playground.someusecase;
 
 import dajoni.spring.playground.someusecase.model.Sample;
 import lombok.Getter;
-import org.springframework.hateoas.ResourceSupport;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.*;
+import org.springframework.hateoas.RepresentationModel;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Getter
-public class SampleResource extends ResourceSupport {
+public class SampleResource extends RepresentationModel<SampleResource> {
     private final Sample sample;
 
     public SampleResource(Sample sample) {

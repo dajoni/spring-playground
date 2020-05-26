@@ -5,7 +5,7 @@ FROM ubuntu:bionic AS updated-with-java
 RUN set -ex \
       && apt-get update \
       && apt-get upgrade --yes \
-      && apt-get install --yes curl gnupg openjdk-8-jdk git sshpass unzip ca-certificates wget \
+      && apt-get install --yes curl gnupg openjdk-11-jdk git sshpass unzip ca-certificates wget \
       && curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - \
       && update-ca-certificates \
       && echo "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable" >> /etc/apt/sources.list \
@@ -13,7 +13,7 @@ RUN set -ex \
 
 FROM updated-with-java 
 
-ENV GRADLE_VERSION=4.9
+ENV GRADLE_VERSION=6.4
 ENV GRADLE_HOME=/opt/gradle
 ENV GRADLE_FOLDER=/root/.gradle
 

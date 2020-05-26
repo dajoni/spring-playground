@@ -23,7 +23,6 @@ public class ProducerRunner implements CommandLineRunner {
     private Random r = new Random();
 
 
-
     @Autowired
     public ProducerRunner(KafkaTemplate<Integer, AnEvent> kafkaTemplate, ProducerProperties properties) {
         this.kafkaTemplate = kafkaTemplate;
