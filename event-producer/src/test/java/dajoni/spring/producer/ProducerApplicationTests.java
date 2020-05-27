@@ -29,7 +29,6 @@ public class ProducerApplicationTests {
     private EmbeddedKafkaBroker broker;
 
     @Test
-    @Disabled
     public void contextLoads() {
 
     }

@@ -3,6 +3,7 @@ plugins {
     id ("io.freefair.lombok") version "5.0.1"
 }
 
+
 dependencies {
 	compileOnly("org.projectlombok:lombok:1.18.12")
 	compileOnly("org.springframework.boot:spring-boot-configuration-processor")
@@ -10,7 +11,6 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter")
 	implementation("io.confluent:kafka-avro-serializer:5.5.0")
     implementation("org.apache.kafka:kafka_2.12:5.5.0-ccs")
-//    implementation('log4j:log4j:1.2.17')
 
     implementation("org.springframework.kafka:spring-kafka") {
         // using clients from Confluent
@@ -28,7 +28,6 @@ dependencies {
 		exclude (module = "kafka-clients")
 	}
     testImplementation("org.apache.kafka:kafka-clients:5.5.0-ccs:test")
-//    testImplementation('log4j:log4j:1.2.17')
 
     configurations.all {
         // using slf4j from spring
